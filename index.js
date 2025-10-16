@@ -1,9 +1,9 @@
 class HashMap {
   constructor(loadFactor = 0.75, capacity = 16) {
     this.loadFactor = loadFactor;
+    this.buckets = new Array(capacity).fill(null).map(() => []);
     this.capacity = capacity;
     this.size = 0;
-    this.buckets = new Array(this.capacity).fill(null).map(() => []);
   }
 
   hash(key) {
@@ -15,5 +15,40 @@ class HashMap {
     }
 
     return hashCode;
+  }
+
+  set(key, value) {
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
+
+    // check if key already exists in the bucket
+    for (let pair of bucket) {
+      if (pair[0] === key) {
+        pair[1] = value;
+        return;
+      }
+    }
+
+    // otherwise, insert a new pair
+    bucket.push([key, value]);
+    this.size++;
+
+    // resize if load factor exceeded
+    if (this.size / this.capacity > this.loadFactor) {
+      this.resize();
+    }
+  }
+
+  resize() {
+    const oldBuckets = this.buckets;
+    this.capacity *= 2;
+    this.size = 0;
+    this.buckets = new Array(this.capacity).fill(null).map(() => []);
+
+    for (let bucket of oldBuckets) {
+      for (let [key, value] of bucket) {
+        this.set(key, value);
+      }
+    }
   }
 }
