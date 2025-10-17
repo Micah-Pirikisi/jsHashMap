@@ -91,4 +91,10 @@ class HashMap {
     }
     return false; 
   }
+
+  clear() {
+    this.capacity = 16; 
+    this.buckets = new Array(this.capacity).fill(null).map(() => []);
+    this.size = 0;
+  }
 }
