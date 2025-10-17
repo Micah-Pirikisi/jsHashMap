@@ -1,8 +1,8 @@
 class HashMap {
   constructor(loadFactor = 0.75, capacity = 16) {
     this.loadFactor = loadFactor;
-    this.buckets = new Array(capacity).fill(null).map(() => []);
     this.capacity = capacity;
+    this.buckets = new Array(capacity).fill(null).map(() => []);
     this.size = 0;
   }
 
@@ -50,5 +50,27 @@ class HashMap {
         this.set(key, value);
       }
     }
+  }
+
+  getItem(key) {
+    let index = this.hash(key);
+
+    for (let [k, v] of this.buckets[index]) {
+      if (k === key) {
+        return v;
+      }
+    }
+    return undefined;
+  }
+
+  has(key) {
+    let index = this.hash(key);
+
+    for (let [k, v] of this.buckets[index]) {
+      if (k === key) {
+        return true;
+      }
+    }
+    return false;
   }
 }
