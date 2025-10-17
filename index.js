@@ -80,21 +80,54 @@ class HashMap {
 
   remove(key) {
     let index = this.hash(key);
-    let bucket = this.buckets[index]; 
+    let bucket = this.buckets[index];
 
     for (let i = 0; i < bucket.length; i++) {
-        if (bucket[i][0] === key) {
-            bucket.splice(i, 1); 
-            this.size--; 
-            return true; 
-        }
+      if (bucket[i][0] === key) {
+        bucket.splice(i, 1);
+        this.size--;
+        return true;
+      }
     }
-    return false; 
+    return false;
   }
 
   clear() {
-    this.capacity = 16; 
+    this.capacity = 16;
     this.buckets = new Array(this.capacity).fill(null).map(() => []);
     this.size = 0;
+  }
+
+  keys() {
+    let hashKeys = [];
+
+    for (let bucket of this.buckets) {
+      for (let [k, v] of bucket) {
+        hashKeys.push(k);
+      }
+    }
+    return hashKeys;
+  }
+
+  values() {
+    let val = [];
+
+    for (let bucket of this.buckets) {
+      for (let [k, v] of bucket) {
+        val.push(v);
+      }
+    }
+    return val;
+  }
+
+  entries() {
+    let pairs = []; 
+
+    for (let bucket of this.buckets) {
+      for (let [k, v] of bucket) {
+        pairs.push([k, v]);
+      }
+    }
+    return pairs;
   }
 }
